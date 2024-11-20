@@ -90,7 +90,8 @@ clone_rep() {
 
 # Функция установки ноды
 install_node() {
-    if confirm "Скачать репозиторий узла?"; then
+    show_bold "Скачать репозиторий узла?"
+    if confirm ''; then
         clone_rep
     else 
         show_war 'Пропущен'

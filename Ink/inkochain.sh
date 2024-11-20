@@ -123,7 +123,7 @@ install_node() {
             # Если порт занят, запрос нового значения
             while ss -tuln | grep -q ":$new_port "; do
                 show_war "Порт $new_port занят."
-                read -p "Введите новый порт для замены $original_port (текущий: $new_port): " user_port
+                read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите новый порт для замены $original_port (текущий: $new_port): ${NC}")" user_port
                 if [[ $user_port =~ ^[0-9]+$ && $user_port -ge 1 && $user_port -le 65535 ]]; then
                     if ss -tuln | grep -q ":$user_port "; then
                         show_war "Ошибка: введённый порт $user_port тоже занят. Попробуйте снова."
@@ -143,6 +143,7 @@ install_node() {
                 echo "INK_RPC_PORT=$new_port" >> ~/.bashrc  # Сохранение в .bashrc для будущих сессий
             fi
             show_bold "Настройка порта завершена."
+            echo ''
         done
     fi
 
@@ -150,15 +151,16 @@ install_node() {
     env_file="$ink_dir/.env.ink-sepolia"
     if [ -f "$env_file" ]; then
         show "Файл $env_file найден. Замена переменных..."
-        read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите URL для OP_NODE_L1_ETH_RPC [Enter = https://ethereum-sepolia-rpc.publicnode.com]: ${NC}")" input_rpc
+        read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите URL для OP_NODE_L1_ETH_RPC ${NC}[Enter = https://ethereum-sepolia-rpc.publicnode.com]: ")" input_rpc
         OP_NODE_L1_ETH_RPC=${input_rpc:-https://ethereum-sepolia-rpc.publicnode.com}
 
-        read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите URL для OP_NODE_L1_BEACON [Enter = https://ethereum-sepolia-beacon-api.publicnode.com]: ${NC}")" input_beacon
+        read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите URL для OP_NODE_L1_BEACON ${NC}[Enter = https://ethereum-sepolia-beacon-api.publicnode.com]: ")" input_beacon
         OP_NODE_L1_BEACON=${input_beacon:-https://ethereum-sepolia-beacon-api.publicnode.com}
 
         sed -i "s|^OP_NODE_L1_ETH_RPC=.*|OP_NODE_L1_ETH_RPC=$OP_NODE_L1_ETH_RPC|" "$env_file"
         sed -i "s|^OP_NODE_L1_BEACON=.*|OP_NODE_L1_BEACON=$OP_NODE_L1_BEACON|" "$env_file"
         show_bold "Переменные успешно обновлены"
+        echo ''
     else
         show_war "Ошибка: файл $env_file не найден!"
         exit 0
@@ -190,6 +192,7 @@ install_node() {
         }
     }
     show_bold "Установка и запуск выполнены успешно!"
+    echo ''
 }
 
 # Удаление ноды

@@ -215,6 +215,7 @@ menu() {
 
 while true; do
     show_menu
-    read -p "Ваш выбор: " choice
+    echo -en "${TERRACOTTA}${BOLD}Ваш выбор: ${NC}"
+    read choice
     menu "$choice"
 done

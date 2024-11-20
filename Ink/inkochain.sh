@@ -122,11 +122,11 @@ install_node() {
 
             # Если порт занят, запрос нового значения
             while ss -tuln | grep -q ":$new_port "; do
-                echo "Порт $new_port занят."
+                show_war "Порт $new_port занят."
                 read -p "Введите новый порт для замены $original_port (текущий: $new_port): " user_port
                 if [[ $user_port =~ ^[0-9]+$ && $user_port -ge 1 && $user_port -le 65535 ]]; then
                     if ss -tuln | grep -q ":$user_port "; then
-                        echo "Ошибка: введённый порт $user_port тоже занят. Попробуйте снова."
+                        show_war "Ошибка: введённый порт $user_port тоже занят. Попробуйте снова."
                     else
                         new_port=$user_port
                         break  # Выход из цикла, если порт свободен
@@ -149,18 +149,18 @@ install_node() {
     # Проверка и замена переменных в .env.ink-sepolia
     env_file="$ink_dir/.env.ink-sepolia"
     if [ -f "$env_file" ]; then
-        echo "Файл $env_file найден. Замена переменных..."
-        read -p "Введите URL для OP_NODE_L1_ETH_RPC [Enter = https://ethereum-sepolia-rpc.publicnode.com]: " input_rpc
+        show "Файл $env_file найден. Замена переменных..."
+        read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите URL для OP_NODE_L1_ETH_RPC [Enter = https://ethereum-sepolia-rpc.publicnode.com]: ${NC}")" input_rpc
         OP_NODE_L1_ETH_RPC=${input_rpc:-https://ethereum-sepolia-rpc.publicnode.com}
 
-        read -p "Введите URL для OP_NODE_L1_BEACON [Enter = https://ethereum-sepolia-beacon-api.publicnode.com]: " input_beacon
+        read -p "$(echo -e "${TERRACOTTA}${BOLD}Введите URL для OP_NODE_L1_BEACON [Enter = https://ethereum-sepolia-beacon-api.publicnode.com]: ${NC}")" input_beacon
         OP_NODE_L1_BEACON=${input_beacon:-https://ethereum-sepolia-beacon-api.publicnode.com}
 
         sed -i "s|^OP_NODE_L1_ETH_RPC=.*|OP_NODE_L1_ETH_RPC=$OP_NODE_L1_ETH_RPC|" "$env_file"
         sed -i "s|^OP_NODE_L1_BEACON=.*|OP_NODE_L1_BEACON=$OP_NODE_L1_BEACON|" "$env_file"
-        echo "Переменные успешно обновлены"
+        show_bold "Переменные успешно обновлены"
     else
-        echo "Ошибка: файл $env_file не найден!"
+        show_war "Ошибка: файл $env_file не найден!"
         exit 0
     fi
 

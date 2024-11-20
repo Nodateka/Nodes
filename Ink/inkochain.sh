@@ -71,7 +71,8 @@ ink_dir="$HOME/ink/node"
 
 # Функция для установки зависимостей
 install_dependencies() {
-    if confirm show 'Установить необходимые пакеты и зависимости?'; then
+    show 'Установить необходимые пакеты и зависимости?'
+    if confirm ''; then
         bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/admin/docker.sh)
         sudo apt install jq net-tools
     else

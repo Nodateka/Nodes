@@ -4,6 +4,25 @@
 show_logotip() {
     bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/name.sh)
 }
+# Цвета для текста
+TERRACOTTA='\033[38;5;208m'
+LIGHT_BLUE='\033[38;5;117m'
+RED='\033[0;31m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# Функции для форматирования текста
+function show() {
+    echo -e "${TERRACOTTA}${BOLD}$1${NC}"
+}
+
+function show_blue() {
+    echo -e "${LIGHT_BLUE}$1${NC}"
+}
+
+function show_war() {
+    echo -e "${RED}$1${NC}"
+}
 
 # Вывод названия узла
 show_name() {

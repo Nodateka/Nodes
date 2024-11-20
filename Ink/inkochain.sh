@@ -14,6 +14,10 @@ PURPLE='\033[0;35m'
 
 # Функции для форматирования текста
 function show() {
+    echo -e "${TERRACOTTA}$1${NC}"
+}
+
+function show_bold() {
     echo -e "${TERRACOTTA}${BOLD}$1${NC}"
 }
 
@@ -67,7 +71,7 @@ ink_dir="$HOME/ink/node"
 
 # Функция для установки зависимостей
 install_dependencies() {
-    if confirm "\033[1;35mУстановить необходимые пакеты и зависимости?\033[0m"; then
+    if confirm show 'Установить необходимые пакеты и зависимости?'; then
         bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/admin/docker.sh)
         sudo apt install jq net-tools
     else
@@ -187,14 +191,14 @@ delete() {
 show_menu() {
    # show_logotip
     show_name
-    echo -e "${TERRACOTTA}${BOLD}Выберите действие: ${NC}\n"
-    echo -e "${TERRACOTTA}1. Установить ноду ${NC}"
-    echo -e "${TERRACOTTA}2. Просмотр логов ноды ${NC}"
-    echo -e "${TERRACOTTA}3. Тестовый запрос к ноде ${NC}"
-    echo -e "${TERRACOTTA}4. Проверка контейнеров ${NC}"
-    echo -e "${TERRACOTTA}8. Вывод приватного ключа ${NC}"
-    echo -e "${TERRACOTTA}9. Удаление ноды ${NC}"
-    echo -e "${TERRACOTTA}0. Выход ${NC}"
+    show_bold 'Выберите действие: \n'
+    show '1. Установить ноду'
+    show '2. Просмотр логов ноды'
+    show '3. Тестовый запрос к ноде'
+    show '4. Проверка контейнеров'
+    show '8. Вывод приватного ключа'
+    show '9. Удаление ноды'
+    show '0. Выход'
     echo ""
 }
 
@@ -210,13 +214,13 @@ menu() {
         8)  cat "$ink_dir/var/secrets/jwt.txt" && echo "" ;;
         9)  delete ;;
         0)  exit 0 ;;
-        *)  echo "Неверный выбор, попробуйте снова." ;;
+        *)  show_war 'Неверный выбор, попробуйте снова.' ;;
     esac
 }
 
 while true; do
     show_menu
-    echo -en "${TERRACOTTA}${BOLD}Ваш выбор: ${NC}"
+    show_bold 'Ваш выбор:'
     read choice
     menu "$choice"
 done

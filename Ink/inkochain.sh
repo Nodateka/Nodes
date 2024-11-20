@@ -67,7 +67,7 @@ confirm() {
     esac
 }
 
-ink_dir="$HOME/ink/node"
+ink_dir="$HOME/ink"
 
 # Функция для установки зависимостей
 install_dependencies() {

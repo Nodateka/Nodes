@@ -22,7 +22,7 @@ function show_blue() {
 }
 
 function show_war() {
-    echo -e "${RED}$1${NC}"
+    echo -e "${RED}${BOLD}$1${NC}"
 }
 
 function show_purple() {
@@ -57,7 +57,7 @@ confirm() {
             return 1  # Отказ от действия
             ;;
         *)
-            echo -e "\033[1;35mПожалуйста, введите y или n.\033[0m"
+            show_war 'Пожалуйста, введите y или n.'
             confirm "$prompt"  # Повторный запрос, если ответ не распознан
             ;;
     esac
@@ -71,7 +71,7 @@ install_dependencies() {
         bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/admin/docker.sh)
         sudo apt install jq net-tools
     else
-        echo -e "\033[1;31mОтменено.\033[0m"
+        show_war 'Отменено.'
     fi
 }
 

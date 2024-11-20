@@ -71,7 +71,7 @@ ink_dir="$HOME/ink/node"
 
 # Функция для установки зависимостей
 install_dependencies() {
-    show 'Установить необходимые пакеты и зависимости?'
+    show_bold 'Установить необходимые пакеты и зависимости?'
     if confirm ''; then
         bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/admin/docker.sh)
         sudo apt install jq net-tools
@@ -81,9 +81,9 @@ install_dependencies() {
 }
 
 clone_rep() {
-    echo "Клонирование репозитория Ink node..."
+    show 'Клонирование репозитория Ink node..'
     git clone https://github.com/inkonchain/node.git "$ink_dir" || {
-        echo "Ошибка при клонировании репозитория!"
+        show_war 'Ошибка при клонировании репозитория!'
         exit 1
     }
 }
@@ -93,12 +93,12 @@ install_node() {
     if confirm "Скачать репозиторий узла?"; then
         clone_rep
     else 
-        echo "Пропущено"
+        show_war 'Пропущен'
     fi
 
-    echo "Переход в директорию узла..."
+    show 'Переход в директорию узла..'
     cd "$ink_dir" || {
-        echo "Ошибка: директория node не найдена!"
+        show_war 'Ошибка: директория node не найдена!'
         exit 1
     }
 
@@ -108,10 +108,10 @@ install_node() {
     # Проверка доступности портов
     for port in "${required_ports[@]}"; do
         if ss -tuln | grep -q ":$port "; then
-            echo "Порт $port: ЗАНЯТ"
+            show_war "Порт $port: ЗАНЯТ"
             exit 1
         else
-            echo "Порт $port: СВОБОДЕН"
+            show "Порт $port: СВОБОДЕН"
         fi
     done
 
@@ -225,7 +225,7 @@ menu() {
 
 while true; do
     show_menu
-    show_bold 'Ваш выбор:'
+    show_bold -n 'Ваш выбор:'
     read choice
     menu "$choice"
 done

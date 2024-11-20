@@ -186,14 +186,14 @@ delete() {
 show_menu() {
    # show_logotip
    # show_name
-    echo -en "${TERRACOTTA}${BOLD}Выберите действие: ${NC}\n"
-    echo -en "${TERRACOTTA}1. Установить ноду ${NC}\n"
-    echo -en "${TERRACOTTA}2. Просмотр логов ноды ${NC}\n"
-    echo -en "${TERRACOTTA}3. Тестовый запрос к ноде ${NC}\n"
-    echo -en "${TERRACOTTA}4. Проверка контейнеров ${NC}\n"
-    echo -en "${TERRACOTTA}8. Вывод приватного ключа ${NC}\n"
-    echo -en "${TERRACOTTA}9. Удаление ноды ${NC}\n"
-    echo -en "${TERRACOTTA}0. Выход ${NC}\n"
+    echo -e "${TERRACOTTA}${BOLD}Выберите действие: ${NC}\n"
+    echo -e "${TERRACOTTA}1. Установить ноду ${NC}\n"
+    echo -e "${TERRACOTTA}2. Просмотр логов ноды ${NC}\n"
+    echo -e "${TERRACOTTA}3. Тестовый запрос к ноде ${NC}\n"
+    echo -e "${TERRACOTTA}4. Проверка контейнеров ${NC}\n"
+    echo -e "${TERRACOTTA}8. Вывод приватного ключа ${NC}\n"
+    echo -e "${TERRACOTTA}9. Удаление ноды ${NC}\n"
+    echo -e "${TERRACOTTA}0. Выход ${NC}\n"
     echo ""
 }
 

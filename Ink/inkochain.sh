@@ -42,9 +42,9 @@ show_name() {
 
 # ASCII-арт
 echo ""
-show_purple '░░░░░▀█▀░█░▄▀░█▄░░█░░░█▀▀█░█░░█░█▀▀█░▀█▀░█▄░░█░░░█▄░░█░█▀▀█░█▀▀▄░█▀▀▀░░░░░'
-show_purple '░░░░░░█░░█▀▄░░█░█░█░░░█░░░░█▀▀█░█▄▄█░░█░░█░█░█░░░█░█░█░█░░█░█░░█░█▀▀▀░░░░░'
-show_purple '░░░░░▄█▄░█░░█░█░░▀█░░░█▄▄█░█░░█░█░░█░▄█▄░█░░▀█░░░█░░▀█░█▄▄█░█▄▄▀░█▄▄▄░░░░░'
+show_purple '░░░░░▀█▀░█▄░░█░█░▄▀░░░█▀▀█░█░░█░█▀▀█░▀█▀░█▄░░█░░░█▄░░█░█▀▀█░█▀▀▄░█▀▀▀░░░░░'
+show_purple '░░░░░░█░░█░█░█░█▀▄░░░░█░░░░█▀▀█░█▄▄█░░█░░█░█░█░░░█░█░█░█░░█░█░░█░█▀▀▀░░░░░'
+show_purple '░░░░░▄█▄░█░░▀█░█░░█░░░█▄▄█░█░░█░█░░█░▄█▄░█░░▀█░░░█░░▀█░█▄▄█░█▄▄▀░█▄▄▄░░░░░'
 echo ""
 }
 
@@ -109,17 +109,17 @@ install_node() {
     # Проверка доступности портов
     for port in "${required_ports[@]}"; do
         if ss -tuln | grep -q ":$port "; then
-            show_war "Порт $port: ЗАНЯТ"
+            show_war 'Порт $port: ЗАНЯТ'
             exit 1
         else
-            show "Порт $port: СВОБОДЕН"
+            show 'Порт $port: СВОБОДЕН'
         fi
     done
 
     # Проверка и замена переменных в .env.ink-sepolia
     env_file="$ink_dir/.env.ink-sepolia"
     if [ -f "$env_file" ]; then
-        echo "Файл $env_file найден. Замена переменных..."
+        show 'Файл $env_file найден. Замена переменных...'
         read -p "Введите URL для OP_NODE_L1_ETH_RPC [Enter = https://ethereum-sepolia-rpc.publicnode.com]: " input_rpc
         OP_NODE_L1_ETH_RPC=${input_rpc:-https://ethereum-sepolia-rpc.publicnode.com}
 
@@ -128,35 +128,35 @@ install_node() {
 
         sed -i "s|^OP_NODE_L1_ETH_RPC=.*|OP_NODE_L1_ETH_RPC=$OP_NODE_L1_ETH_RPC|" "$env_file"
         sed -i "s|^OP_NODE_L1_BEACON=.*|OP_NODE_L1_BEACON=$OP_NODE_L1_BEACON|" "$env_file"
-        echo "Переменные успешно обновлены"
+        show "Переменные успешно обновлены"
     else
-        echo "Ошибка: файл $env_file не найден!"
+        show_war 'Ошибка: файл $env_file не найден!'
         exit 1
     fi
 
     # Проверка и замена портов в docker-compose.yml
     compose_file="$ink_dir/docker-compose.yml"
     if [ -f "$compose_file" ]; then
-        echo "Файл $compose_file найден. Замена портов..."
+        show "Файл $compose_file найден. Замена портов..."
         sed -i 's|8545:|8525:|g' "$compose_file"
         sed -i 's|8546:|8526:|g' "$compose_file"
         sed -i 's|30303:|30313:|g' "$compose_file"
         sed -i 's|9545:|9535:|g' "$compose_file"
         sed -i 's|9222:|9232:|g' "$compose_file"
-        echo "Порты успешно заменены."
+        show "Порты успешно заменены."
     else
-        echo "Ошибка: файл $compose_file не найден!"
+        show_war "Ошибка: файл $compose_file не найден!"
         exit 1
     fi
 
     # Запуск скрипта установки
     if [ -x "./setup.sh" ]; then
-        echo "Запускаю скрипт установки..."
+        show "Запускаю скрипт установки..."
         ./setup.sh
-        echo "Удаление архива снепшота"
+        show "Удаление архива снепшота"
         rm -f *.tar.gz
     else
-        echo "Ошибка: setup.sh не найден или не является исполняемым!"
+        show_war "Ошибка: setup.sh не найден или не является исполняемым!"
         exit 1
     fi
 
@@ -166,26 +166,26 @@ install_node() {
     sudo chmod -R 755 "$ink_dir/geth"
 
     # Запуск Docker Compose
-    echo "Запуск ноды..."
+    show "Запуск ноды..."
     docker compose up -d || {
         echo "Перезапуск Docker Compose..."
         docker compose down && docker compose up -d || {
-            echo "Ошибка при повторном запуске Docker Compose!"
+            show_war "Ошибка при повторном запуске Docker Compose!"
             exit 1
         }
     }
-    echo "Установка и запуск выполнены успешно!"
+    show_bold "Установка и запуск выполнены успешно!"
 }
 
 # Удаление ноды
 delete() {
-    echo "Остановка и удаление контейнеров"
+    show "Остановка и удаление контейнеров"
     cd "$ink_dir" && docker compose down 
     if confirm "Удалить директорию и все данные?"; then
         cd ~ && rm -rf "$ink_dir"
-        echo "Успешно удалено." 
+        show_bold "Успешно удалено." 
     else
-        echo "Не удалено."
+        show_war "Не удалено."
     fi
 }
 
@@ -194,6 +194,7 @@ show_menu() {
    # show_logotip
     show_name
     show_bold 'Выберите действие:'
+    echo ''
     actions=(
         "1. Установить ноду"
         "2. Просмотр логов ноды"

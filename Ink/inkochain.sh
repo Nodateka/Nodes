@@ -184,16 +184,16 @@ delete() {
 
 # Меню с командами
 show_menu() {
-    show_logotip
-    show_name
-    echo "Выберите действие:"
-    echo "1. Установить ноду"
-    echo "2. Просмотр логов ноды"
-    echo "3. Тестовый запрос к ноде"
-    echo "4. Проверка контейнеров"
-    echo "8. Вывод приватного ключа"
-    echo "9. Удаление ноды"
-    echo "0. Выход"
+   # show_logotip
+   # show_name
+    echo -en "${TERRACOTTA}${BOLD}Выберите действие: ${NC}"
+    echo -en "${TERRACOTTA}1. Установить ноду ${NC}"
+    echo -en "${TERRACOTTA}2. Просмотр логов ноды ${NC}"
+    echo -en "${TERRACOTTA}3. Тестовый запрос к ноде ${NC}"
+    echo -en "${TERRACOTTA}4. Проверка контейнеров ${NC}"
+    echo -en "${TERRACOTTA}8. Вывод приватного ключа ${NC}"
+    echo -en "${TERRACOTTA}9. Удаление ноды ${NC}"
+    echo -en "${TERRACOTTA}0. Выход ${NC}"
     echo ""
 }
 

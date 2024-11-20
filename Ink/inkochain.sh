@@ -15,7 +15,6 @@ show_name() {
 # Функция для подтверждения действия
 confirm() {
     local prompt="$1"
-    echo -e "$prompt"
     read -p "$prompt [y/n, Enter = yes]: " choice
     case "$choice" in
         ""|y|Y|yes|Yes)  # Пустой ввод или "да"

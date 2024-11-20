@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Логотип команды
-show_logotip() {
-    bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/name.sh)
-}
+#show_logotip() {
+#    bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/name.sh)
+#}
 # Цвета для текста
 TERRACOTTA='\033[38;5;208m'
 LIGHT_BLUE='\033[38;5;117m'

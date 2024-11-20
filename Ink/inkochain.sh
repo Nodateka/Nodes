@@ -32,7 +32,7 @@ function show_purple() {
 # Вывод названия узла
 #show_name() {
 #    echo ""
-#    echo -e "\033[1;35mINK chain node\033[0m"
+#    echo -e "\033[1;35mINK chain 11111111111node\033[0m"
 #    echo ""
 #}
 

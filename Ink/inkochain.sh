@@ -18,7 +18,7 @@ function show() {
 }
 
 function show_bold() {
-    echo -e "${TERRACOTTA}${BOLD}$1${NC}"
+    echo -en "${TERRACOTTA}${BOLD}$1${NC}"
 }
 
 function show_blue() {
@@ -225,7 +225,7 @@ menu() {
 
 while true; do
     show_menu
-    show_bold -n 'Ваш выбор:'
+    show_bold 'Ваш выбор:'
     read choice
     menu "$choice"
 done

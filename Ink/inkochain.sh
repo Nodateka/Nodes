@@ -256,7 +256,9 @@ menu() {
             fi ;;
         8)  cat "$ink_dir/var/secrets/jwt.txt" && echo "" ;;
         9)  delete ;;
-        0)  exit 0 ;;
+        0)  
+            echo -en "${TERRACOTTA}${BOLD}Присоединяйся к Нодатеке, будем ставить ноды вместе! ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}\n"
+            exit 0 ;;
         *)  show_war "Неверный выбор, попробуйте снова." ;;
     esac
 }

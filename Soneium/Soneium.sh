@@ -99,17 +99,19 @@ clone_rep() {
 install_node() {
     clone_rep
     show "Переход в директорию узла..."
-    cd "$son_dir/minato"
-    openssl rand -hex 32 > jwt.txt
-    mv sample.env .env
-
-    # Переход в директорию узла
-    if cd "$son_dir/minato"; then
+    
+    # Проверка на существование директории перед переходом
+    if [ -d "$son_dir/minato" ]; then
+        cd "$son_dir/minato" || exit 1
         show "Успешно перешли в директорию узла."
     else
         show_war "Ошибка: директория minato не найдена!"
         exit 1
     fi
+
+    # Генерация файла jwt.txt и переименование sample.env
+    openssl rand -hex 32 > jwt.txt
+    mv sample.env .env
 
     # Проверка и замена портов в docker-compose.yml
     compose_file="$son_dir/minato/docker-compose.yml"

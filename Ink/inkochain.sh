@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Логотип команды
-show_logotip() {
-    bash <(curl -s https://raw.githubusercontent.com/Nodateka/Basic/refs/heads/main/logo.sh)
-}
 # Цвета для текста
 TERRACOTTA='\033[38;5;208m'
 LIGHT_BLUE='\033[38;5;117m'
@@ -33,12 +29,10 @@ function show_purple() {
     echo -e "${PURPLE}$1${NC}"
 }
 
-# Вывод названия узла
-show_name() {
-#    echo ""
-#    echo -e "\033[1;35mINK chain 11111111111node\033[0m"
-#    echo ""
-#}
+# Логотип команды
+show_logotip() {
+    bash <(curl -s https://raw.githubusercontent.com/Nodateka/Basic/refs/heads/main/logo.sh)
+}
 
 # ASCII-арт
 echo ""
@@ -258,10 +252,10 @@ menu() {
         9)  delete ;;
         0)  
             echo ''
-            show_bold "Присоединяйся к Нодатеке, будем ставить ноды вместе!!"
-            echo ''
-            echo -e "${TERRACOTTA}${BOLD}Telegram: ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}\n"
-            echo -e "${TERRACOTTA}${BOLD}Twitter: ${NC}${LIGHT_BLUE}https://x.com/nodateka${NC}\n"
+            show_bold "Присоединяйся к Нодатеке, будем ставить ноды вместе!"
+            echo -e''
+            echo -en "${TERRACOTTA}${BOLD}Telegram: ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}"
+            echo -en "${TERRACOTTA}${BOLD}Twitter: ${NC}${LIGHT_BLUE}https://x.com/nodateka${NC}\n"
             echo -e "${TERRACOTTA}${BOLD}YouTube: ${NC}${LIGHT_BLUE}https://www.youtube.com/@CryptoTesemnikov${NC}\n"
             exit 0 ;;
         *)  show_war "Неверный выбор, попробуйте снова." ;;

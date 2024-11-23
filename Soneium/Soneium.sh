@@ -110,13 +110,13 @@ install_node() {
         show_war "Ошибка: директория minato не найдена!"
         exit 1
     fi
-    }
-   
+
     # Проверка и замена портов в docker-compose.yml
     compose_file="$son_dir/minato/docker-compose.yml"
     if [ -f "$compose_file" ]; then
         show "Файл $compose_file найден. Проверка и настройка портов..."
         docker compose down
+
         # Массив с портами и их назначением
         declare -A port_mapping=(
             ["8551"]="8551"
@@ -177,7 +177,6 @@ install_node() {
         exit 1
     fi
 
-
     # Запуск Docker Compose
     show "Запуск ноды..."
     docker compose up -d || {
@@ -190,7 +189,6 @@ install_node() {
     show_bold "Установка и запуск выполнены успешно!"
     echo ''
 }
-
 # Удаление ноды
 delete() {
     show "Остановка и удаление контейнеров"

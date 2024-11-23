@@ -110,7 +110,7 @@ install_node() {
         show_war "Ошибка: директория node не найдена!"
         exit 1
     fi
-}
+    }
    
     # Проверка и замена портов в docker-compose.yml
     compose_file="$son_dir/minato/docker-compose.yml"

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Логотип команды
-#show_logotip() {
-#    bash <(curl -s https://raw.githubusercontent.com/tpatop/nodateka/refs/heads/main/basic/name.sh)
-#}
+show_logotip() {
+    bash <(curl -s https://raw.githubusercontent.com/Nodateka/Basic/refs/heads/main/logo.sh)
+}
 # Цвета для текста
 TERRACOTTA='\033[38;5;208m'
 LIGHT_BLUE='\033[38;5;117m'
@@ -257,7 +257,10 @@ menu() {
         8)  cat "$ink_dir/var/secrets/jwt.txt" && echo "" ;;
         9)  delete ;;
         0)  
-            echo -en "${TERRACOTTA}${BOLD}Присоединяйся к Нодатеке, будем ставить ноды вместе! ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}\n"
+            show_bold "Присоединяйся к Нодатеке, будем ставить ноды вместе!"
+            echo -e "${TERRACOTTA}${BOLD}Telegram: ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}\n"
+            echo -e "${TERRACOTTA}${BOLD}Twitter: ${NC}${LIGHT_BLUE}https://x.com/nodateka${NC}\n"
+            echo -e "${TERRACOTTA}${BOLD}YouTube: ${NC}${LIGHT_BLUE}https://www.youtube.com/@CryptoTesemnikov${NC}\n"
             exit 0 ;;
         *)  show_war "Неверный выбор, попробуйте снова." ;;
     esac

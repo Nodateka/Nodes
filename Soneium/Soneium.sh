@@ -84,7 +84,7 @@ install_dependencies() {
 }
 
 clone_rep() {
-    show 'Клонирование репозитория Ink node..'
+    show 'Клонирование репозитория Soneium node..'
     if [ -d "$son_dir" ]; then
         show "Репозиторий уже скачан. Пропуск клонирования."
     else

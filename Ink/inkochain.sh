@@ -257,7 +257,9 @@ menu() {
         8)  cat "$ink_dir/var/secrets/jwt.txt" && echo "" ;;
         9)  delete ;;
         0)  
+            echo ''
             show_bold "Присоединяйся к Нодатеке, будем ставить ноды вместе!"
+            echo ''
             echo -e "${TERRACOTTA}${BOLD}Telegram: ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}\n"
             echo -e "${TERRACOTTA}${BOLD}Twitter: ${NC}${LIGHT_BLUE}https://x.com/nodateka${NC}\n"
             echo -e "${TERRACOTTA}${BOLD}YouTube: ${NC}${LIGHT_BLUE}https://www.youtube.com/@CryptoTesemnikov${NC}\n"

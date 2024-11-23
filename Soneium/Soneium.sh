@@ -99,7 +99,7 @@ clone_rep() {
 install_node() {
     clone_rep
     show "Переход в директорию узла..."
-    
+    cd "$son_dir/minato"
     openssl rand -hex 32 > jwt.txt
     mv sample.env .env
 
@@ -107,7 +107,7 @@ install_node() {
     if cd "$son_dir/minato"; then
         show "Успешно перешли в директорию узла."
     else
-        show_war "Ошибка: директория node не найдена!"
+        show_war "Ошибка: директория minato не найдена!"
         exit 1
     fi
     }
@@ -174,7 +174,7 @@ install_node() {
         echo ''
     else
         show_war "Ошибка: файл $env_file не найден!"
-        exit 0
+        exit 1
     fi
 
 

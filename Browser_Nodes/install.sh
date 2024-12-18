@@ -119,7 +119,7 @@ read -p "$(show_bold 'Введите базовое имя контейнера:
 
 # Запрашиваем стартовый порт
 default_port=10000
-read -p "$(show_bold 'С какого порта начать? (По умолчанию $default_port): ') " start_port
+read -p "$(show_bold 'С какого порта начать? (По умолчанию ${default_port}): ') " start_port
 start_port=${start_port:-$default_port}
 
 # Проверка уникальности порта

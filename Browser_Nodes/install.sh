@@ -253,7 +253,7 @@ for ((i=0; i<container_count; i++)); do
 
   # Проверка, что порт свободен
   while ! check_port "$current_port"; do
-    show_war "Порт $current_port уже занят. Пробую следующий..."
+    show_war "Порт $current_port занят. Пробую следующий..."
     ((current_port++))  # Увеличиваем порт, пока не найдём свободный
   done
 
@@ -289,7 +289,9 @@ for ((i=0; i<container_count; i++)); do
 
   if [ $? -eq 0 ]; then
     show "Контейнер $container_name_unique успешно запущен."
-    show_bold "Откройте этот адрес: http://$IP:$current_port/"
+    echo ""  # Пустая строка для разделения между контейнерами
+    echo -en "${TERRACOTTA}${BOLD}Откройте этот адрес: ${NC}${LIGHT_BLUE}http://$IP:$current_port/${NC}\n"
+    echo ""  # Пустая строка для разделения между контейнерами
   else
     show_war "Не удалось запустить контейнер $container_name_unique."
   fi

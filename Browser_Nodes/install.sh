@@ -119,9 +119,16 @@ read -p "$(show_bold 'Введите базовое имя контейнера:
 
 # Запрашиваем стартовый порт
 default_port=10000
-prompt_message="С какого порта начать? (По умолчанию $default_port): "
-read -p "$(show_bold "$prompt_message") " start_port
-start_port=${start_port:-$default_port}
+while true; do
+  prompt_message="С какого порта начать? (По умолчанию $default_port): "
+  read -p "$(show_bold "$prompt_message") " start_port
+  start_port=${start_port:-$default_port}
+  if check_port "$start_port"; then
+    break  # Если порт свободен, выходим из цикла
+  else
+    show_war "Порт $start_port уже занят. Попробуйте снова."
+  fi
+done
 
 # Проверка уникальности порта
 #function check_port() {

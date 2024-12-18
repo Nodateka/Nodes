@@ -124,9 +124,18 @@ read -p "$(show_bold "$prompt_message") " start_port
 start_port=${start_port:-$default_port}
 
 # Проверка уникальности порта
+#function check_port() {
+#  port_in_use=$(lsof -i -P -n | grep -w "$1")
+#  if [ -n "$port_in_use" ]; then
+#    show_war "Порт $1 уже занят. Выберите другой порт."
+#    return 1
+#  else
+#    return 0
+#  fi
+#}
+
 function check_port() {
-  port_in_use=$(lsof -i -P -n | grep -w "$1")
-  if [ -n "$port_in_use" ]; then
+  if ss -ltn | grep -q ":$1 "; then
     show_war "Порт $1 уже занят. Выберите другой порт."
     return 1
   else

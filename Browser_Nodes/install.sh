@@ -1,23 +1,81 @@
 #!/bin/bash
 
 # Цвета для вывода
-GREEN="\033[32m"
-RED="\033[31m"
-RESET="\033[0m"
+#GREEN="\033[32m"
+#RED="\033[31m"
+#RESET="\033[0m"
 
-show() {
-  echo -e "${GREEN}$1${RESET}"
+#show() {
+#  echo -e "${GREEN}$1${RESET}"
+#}
+
+#error() {
+#  echo -e "${RED}$1${RESET}"
+#}
+# Цвета для текста
+TERRACOTTA='\033[38;5;208m'
+LIGHT_BLUE='\033[38;5;117m'
+RED='\033[0;31m'
+BOLD='\033[1m'
+NC='\033[0m'
+PURPLE='\033[0;35m'
+
+# Функции для форматирования текста
+function show() {
+    echo -e "${TERRACOTTA}$1${NC}"
 }
 
-error() {
-  echo -e "${RED}$1${RESET}"
+function show_bold() {
+    echo -en "${TERRACOTTA}${BOLD}$1${NC}"
+}
+
+function show_blue() {
+    echo -e "${LIGHT_BLUE}$1${NC}"
+}
+
+function show_war() {
+    echo -e "${RED}${BOLD}$1${NC}"
+}
+
+function show_purple() {
+    echo -e "${PURPLE}$1${NC}"
+}
+final_message() {
+    echo ''
+    show_bold "Присоединяйся к Нодатеке, будем ставить ноды вместе!"
+    echo ''
+    echo -en "${TERRACOTTA}${BOLD}Telegram: ${NC}${LIGHT_BLUE}https://t.me/cryptotesemnikov/778${NC}\n"
+    echo -en "${TERRACOTTA}${BOLD}Twitter: ${NC}${LIGHT_BLUE}https://x.com/nodateka${NC}\n"
+    echo -e "${TERRACOTTA}${BOLD}YouTube: ${NC}${LIGHT_BLUE}https://www.youtube.com/@CryptoTesemnikov${NC}\n"
+}
+
+# Установка обработчиков завершения
+trap final_message EXIT  # Вывод сообщения при любом завершении скрипта
+trap 'show_war "Скрипт завершился с ошибкой."; exit 1' ERR  # Вывод при ошибке
+
+
+# Логотип команды
+show_logotip() {
+    bash <(curl -s https://raw.githubusercontent.com/Nodateka/Basic/refs/heads/main/logo.sh)
+}
+
+# ASCII-арт
+show_name() {
+    echo ""
+    show_purple '░░░░░█▀▀█░█▀▀█░█▀▀█░█░█░█░█▀▀█░█▀▀▀░█▀▀█░░░█▄░░█░█▀▀█░█▀▀▄░█▀▀▀░█▀▀█░░░░░'
+    show_purple '░░░░░█▀▀▄░█▄▄▀░█░░█░█░█░█░▀▀▄▄░█▀▀▀░█▄▄▀░░░█░█░█░█░░█░█░░█░█▀▀▀░▀▀▄▄░░░░░'
+    show_purple '░░░░░█▄▄█░█░░█░█▄▄█░█▄▀▄█░█▄▄█░█▄▄█░█░░█░░░█░░▀█░█▄▄█░█▄▄▀░█▄▄▄░█▄▄█░░░░░'
+    echo ""
 }
 
 # Проверка на запуск от имени root
 if [ "$EUID" -ne 0 ]; then
-  error "Пожалуйста, запустите скрипт с правами root."
+  show_war "Пожалуйста, запустите скрипт с правами root."
   exit 1
 fi
+clear
+show_logotip
+show_name
 
 # Обновление системы и установка зависимостей
 show "Обновление системы и установка зависимостей..."
@@ -37,7 +95,7 @@ if ! [ -x "$(command -v docker)" ]; then
   show "Установка Docker..."
   curl -fsSL https://get.docker.com | sh
   if ! [ -x "$(command -v docker)" ]; then
-    error "Не удалось установить Docker."
+    show_war "Не удалось установить Docker."
     exit 1
   else
     show "Docker успешно установлен."
@@ -49,7 +107,7 @@ fi
 # Получение внешнего IP-адреса
 IP=$(curl -4 -s ifconfig.me)
 if [ -z "$IP" ]; then
-  error "Не удалось получить внешний IP адрес."
+  show_war "Не удалось получить внешний IP адрес."
   exit 1
 fi
 
@@ -80,7 +138,7 @@ PROXY_FILE="$HOME/proxies.txt"
 
 # Проверка наличия файла с прокси
 if [ ! -f "$PROXY_FILE" ]; then
-  error "Файл с прокси не найден. Пожалуйста, создайте файл $PROXY_FILE и введите список прокси."
+  show_war "Файл с прокси не найден. Пожалуйста, создайте файл $PROXY_FILE и введите список прокси."
   exit 1
 fi
 
@@ -92,7 +150,7 @@ rm -f "$PROXY_FILE"
 
 # Проверка, что количество прокси не меньше количества контейнеров
 if [ ${#PROXIES[@]} -lt "$container_count" ]; then
-  error "Количество прокси меньше, чем количество контейнеров. Скрипт завершает работу."
+  show_war "Количество прокси меньше, чем количество контейнеров. Скрипт завершает работу."
   exit 1
 fi
 
@@ -112,7 +170,7 @@ while true; do
   read -s -p "Подтвердите пароль: " PASSWORD_CONFIRM
   echo
   if [ "$PASSWORD" != "$PASSWORD_CONFIRM" ]; then
-    error "Пароли не совпадают. Повторите ввод."
+    show_war "Пароли не совпадают. Повторите ввод."
   else
     break
   fi
@@ -130,7 +188,7 @@ EOL
 # Проверка и загрузка образа Docker с Chromium
 show "Загрузка последнего образа Docker с Chromium..."
 if ! docker pull linuxserver/chromium:latest; then
-  error "Не удалось загрузить образ Docker с Chromium."
+  show_war "Не удалось загрузить образ Docker с Chromium."
   exit 1
 else
   show "Образ Docker с Chromium успешно загружен."
@@ -163,7 +221,7 @@ for ((i=0; i<container_count; i++)); do
 
   # Проверка, что порт свободен
   if ! check_port "$current_port"; then
-    error "Невозможно запустить контейнер на порту $current_port, так как он занят."
+    show_war "Невозможно запустить контейнер на порту $current_port. Порт занят."
     continue
   fi
 
@@ -198,6 +256,6 @@ for ((i=0; i<container_count; i++)); do
     show "Контейнер $container_name_unique успешно запущен."
     show "Откройте этот адрес: http://$IP:$current_port/"
   else
-    error "Не удалось запустить контейнер $container_name_unique."
+    show_war "Не удалось запустить контейнер $container_name_unique."
   fi
 done

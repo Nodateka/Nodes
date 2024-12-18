@@ -48,6 +48,16 @@ final_message() {
     echo -en "${TERRACOTTA}${BOLD}Twitter: ${NC}${LIGHT_BLUE}https://x.com/nodateka${NC}\n"
     echo -e "${TERRACOTTA}${BOLD}YouTube: ${NC}${LIGHT_BLUE}https://www.youtube.com/@CryptoTesemnikov${NC}\n"
 }
+# Проверка уникальности порта
+function check_port() {
+  if ss -ltn | grep -q ":$1 "; then
+    show_war "Порт $1 уже занят. Выберите другой порт."
+    return 1
+  else
+    return 0
+  fi
+}
+
 
 # Установка обработчиков завершения
 trap final_message EXIT  # Вывод сообщения при любом завершении скрипта
@@ -141,14 +151,7 @@ done
 #  fi
 #}
 
-function check_port() {
-  if ss -ltn | grep -q ":$1 "; then
-    show_war "Порт $1 уже занят. Выберите другой порт."
-    return 1
-  else
-    return 0
-  fi
-}
+
 
 # Путь к файлу с прокси
 PROXY_FILE="$HOME/proxies.txt"
@@ -231,16 +234,31 @@ for ((i=0; i<container_count; i++)); do
   chromium_proxy_args="--proxy-server=http://$user:$pass@$ip:$port"
 
   # Прокси SOCKS5
+  #proxy_socks5="-e ALL_PROXY=socks5://$user:$pass@$ip:$port"
+  #chromium_proxy_args="--proxy-server=socks5://$user:$pass@$ip:$port"
+
+  #current_port=$((start_port + i * 10))  # Каждый следующий контейнер на 10 портов дальше
+
+  # Проверка, что порт свободен
+  #if ! check_port "$current_port"; then
+  #  show_war "Невозможно запустить контейнер на порту $current_port. Порт занят."
+  #  continue
+  #fi
+
+  # Прокси SOCKS5
   proxy_socks5="-e ALL_PROXY=socks5://$user:$pass@$ip:$port"
   chromium_proxy_args="--proxy-server=socks5://$user:$pass@$ip:$port"
 
   current_port=$((start_port + i * 10))  # Каждый следующий контейнер на 10 портов дальше
 
   # Проверка, что порт свободен
-  if ! check_port "$current_port"; then
-    show_war "Невозможно запустить контейнер на порту $current_port. Порт занят."
-    continue
-  fi
+  while ! check_port "$current_port"; do
+    show_war "Порт $current_port уже занят. Пробую следующий..."
+    ((current_port++))  # Увеличиваем порт, пока не найдём свободный
+  done
+
+  # Сообщение об успешной проверке
+  show "Порт $current_port свободен. Использую его для контейнера."
 
   # Генерация уникального имени контейнера
   container_name_unique="${container_name}$i"

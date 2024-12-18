@@ -112,21 +112,21 @@ if [ -z "$IP" ]; then
 fi
 
 # Запрашиваем количество контейнеров
-read -p "$(show_bold 'Сколько контейнеров хотите создать? ') " container_count
+read -p "$(show_bold 'Сколько контейнеров вы хотите создать? ') " container_count
 
 # Запрашиваем базовое имя контейнера
-read -p "Введите базовое имя контейнера: " container_name
+read -p "$(show_bold 'Введите базовое имя контейнера: ') " container_name
 
 # Запрашиваем стартовый порт
 default_port=10000
-read -p "С какого порта начать? (По умолчанию $default_port): " start_port
+read -p "$(show_bold 'С какого порта начать? (По умолчанию $default_port): ') " start_port
 start_port=${start_port:-$default_port}
 
 # Проверка уникальности порта
 function check_port() {
   port_in_use=$(lsof -i -P -n | grep -w "$1")
   if [ -n "$port_in_use" ]; then
-    echo "Порт $1 уже занят. Выберите другой порт."
+    show_war "Порт $1 уже занят. Выберите другой порт."
     return 1
   else
     return 0
@@ -161,13 +161,13 @@ proxy_socks5=""
 chromium_proxy_args=""
 
 # Запрашиваем имя пользователя
-read -p "Введите имя пользователя: " USERNAME
+read -p "$(show_bold 'Введите имя пользователя: ') " USERNAME
 
 # Запрашиваем пароль с подтверждением
 while true; do
-  read -s -p "Введите пароль: " PASSWORD
+  read -s -p "$(show_bold 'Введите пароль: ') " PASSWORD
   echo  # Переход на новую строку
-  read -s -p "Подтвердите пароль: " PASSWORD_CONFIRM
+  read -s -p "$(show_bold 'Подтвердите пароль: ') " PASSWORD_CONFIRM
   echo
   if [ "$PASSWORD" != "$PASSWORD_CONFIRM" ]; then
     show_war "Пароли не совпадают. Повторите ввод."
@@ -254,7 +254,7 @@ for ((i=0; i<container_count; i++)); do
 
   if [ $? -eq 0 ]; then
     show "Контейнер $container_name_unique успешно запущен."
-    show "Откройте этот адрес: http://$IP:$current_port/"
+    show_bold "Откройте этот адрес: http://$IP:$current_port/"
   else
     show_war "Не удалось запустить контейнер $container_name_unique."
   fi

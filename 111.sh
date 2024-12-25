@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Проверка наличия curl и установка, если не установлен
 if ! command -v curl &> /dev/null; then
     sudo apt update
